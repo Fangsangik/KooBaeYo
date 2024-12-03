@@ -33,6 +33,16 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Boolean isDeleted = false;
 
-    @Column(nullable = false)
-    private String role;
+
+    public User(){}
+
+    public User(String name, String email, String password, Role role, String number) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.number = number;
+    }
+
+
 }
