@@ -2,6 +2,7 @@ package com.example.koobaeyo.user.entity;
 
 import jakarta.persistence.*;
 
+@Entity
 @Table(name = "user")
 public class User {
 
