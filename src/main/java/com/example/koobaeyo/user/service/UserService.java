@@ -43,13 +43,4 @@ public class UserService {
         return new SignUpResponseDto(savedUser.getId());
     }
 
-//    public UpdateUserResponseDto updateUser(HttpServletRequest request, String password, String newPassword) {
-//        HttpSession session = request.getSession(false);
-//        Long currentUserId = (Long) session.getAttribute("userId");
-//
-//        User updateUser = userRepository.findById(currentUserId)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다"));
-//
-//        if(password equals(newPassword)) {
-//    }
 }
