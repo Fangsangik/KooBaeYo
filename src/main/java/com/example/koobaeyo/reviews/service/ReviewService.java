@@ -88,11 +88,11 @@ public class ReviewService {
     public Page<ReviewResponseDto> findReviewByRate(Long storeId, FindReviewByRateDto findReviewByRateDto, int page, int size) {
         pageValidation(page, size);
 
-        if (findReviewByRateDto.getMinRate() < 3 || findReviewByRateDto.getMaxRate() > 5) {
+        if (findReviewByRateDto.getMinRate() < 3 || findReviewByRateDto.getMaxRate() > 5 || findReviewByRateDto.getMinRate() > findReviewByRateDto.getMaxRate()) {
             throw new IllegalArgumentException("평점은 3~5 사이여야합니다.");
         }
 
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Review> reviews = reviewRepository.findByReviewRateAndStoreId(storeId, findReviewByRateDto.getMinRate(), findReviewByRateDto.getMaxRate(), pageable);
 
         return reviews.map(review -> new ReviewResponseDto(review.getUser().getId(), review.getRate(), review.getContent()));
