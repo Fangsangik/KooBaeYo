@@ -5,6 +5,7 @@ import com.example.koobaeyo.common.constants.Auth;
 import com.example.koobaeyo.stores.dto.*;
 import com.example.koobaeyo.stores.service.StoreService;
 import com.example.koobaeyo.user.entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,9 @@ public class StoreController {
     //가게 생성
     @PostMapping
     public ResponseEntity<CommonResponse<StoreOpenResponseDto>> openStore(
-            @SessionAttribute("loginUser") User user,
+            @SessionAttribute(Auth.LOGIN_USER) User user,
             @RequestBody StoreOpenRequestDto dto)
     {
-
         StoreOpenResponseDto responseDto = storeService.openStore(user, dto);
 
         return new ResponseEntity<>(new CommonResponse<>("성공했습니다.", responseDto), HttpStatus.CREATED);
@@ -41,7 +41,7 @@ public class StoreController {
     ){
         List<StoreResponseDto> dtoList = storeService.searchStoreByName(storeName);
 
-        return new ResponseEntity<>(new CommonResponse<List<StoreResponseDto>>("성공했습니다.",dtoList),HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse<>("성공했습니다.",dtoList),HttpStatus.OK);
     }
 
     //가게 단건 조회
@@ -67,6 +67,7 @@ public class StoreController {
     }
 
     //가게 폐업
+    @Transactional
     @DeleteMapping("/{storeId}")
     public ResponseEntity<CommonResponse<StoreOpenResponseDto>> closeDownStore(
         @PathVariable Long storeId,

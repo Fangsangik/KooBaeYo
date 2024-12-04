@@ -1,11 +1,12 @@
 package com.example.koobaeyo.stores.dto;
 
+import com.example.koobaeyo.menus.entity.Menu;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import lombok.Getter;
 
-import java.awt.*;
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 public class StoreResponseDetailDto {

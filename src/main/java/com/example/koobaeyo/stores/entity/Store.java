@@ -1,7 +1,7 @@
 package com.example.koobaeyo.stores.entity;
 
 import com.example.koobaeyo.common.BaseEntity;
-import com.example.koobaeyo.orders.entity.Order;
+import com.example.koobaeyo.menus.entity.Menu;
 import com.example.koobaeyo.stores.dto.StoreRemodelRequestDto;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import com.example.koobaeyo.user.entity.User;
@@ -9,9 +9,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.awt.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -42,7 +42,7 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private LocalTime closing;
 
-    @Column(columnDefinition = "TINYINT(1) NOT NULL DEFAULT 1")
+    @Column
     private Boolean isOpen;
 
     @ManyToOne
@@ -52,14 +52,14 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
+//    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
+//    private List<Order> orders = new ArrayList<>();
 
     public Store(){ }
 
     @Builder
     public Store(String name, CuisineType type, String address, Double minOrderAmount, LocalTime opening,
-                 LocalTime closing, Boolean isOpen, User user) {
+                 LocalTime closing, User user) {
 
         this.name = name;
         this.type = type;
@@ -67,8 +67,8 @@ public class Store extends BaseEntity {
         this.minOrderAmount = minOrderAmount;
         this.opening = opening;
         this.closing = closing;
-        this.isOpen = isOpen;
         this.owner = user;
+        this.isOpen = true;
     }
 
     public void remodel(StoreRemodelRequestDto dto){

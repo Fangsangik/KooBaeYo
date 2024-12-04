@@ -2,7 +2,9 @@ package com.example.koobaeyo.stores.dto;
 
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
+import com.example.koobaeyo.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.time.LocalTime;
@@ -18,15 +20,16 @@ public class StoreOpenRequestDto {
     private String address;
     @NotBlank
     private Double minOrderAmount;
-    @NotBlank
+    @NotNull
     private LocalTime opening;
-    @NotBlank
+    @NotNull
     private LocalTime closing;
 
-    public Store toEntity(){
+    public Store toEntity(User user){
         return Store.builder()
                 .name(this.name)
                 .type(this.type)
+                .user(user)
                 .address(this.address)
                 .minOrderAmount(this.minOrderAmount)
                 .opening(this.opening)
