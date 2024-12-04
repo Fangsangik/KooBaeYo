@@ -1,5 +1,6 @@
 package com.example.koobaeyo.menus.controller;
 
+import com.example.koobaeyo.common.CommonResponse;
 import com.example.koobaeyo.common.constants.Auth;
 import com.example.koobaeyo.menus.dto.MenuRequestDto;
 import com.example.koobaeyo.menus.dto.MenuResponseDto;
@@ -28,43 +29,39 @@ public class MenuController {
     }
 
     @PostMapping("/menus")
-    public ResponseEntity<MenuResponseDto> createMenu(
+    public ResponseEntity<CommonResponse> createMenu(
             @SessionAttribute(Auth.LOGIN_USER) User user,
             @PathVariable Long storeId,
             @RequestBody @Valid MenuRequestDto requestDto
     ){
 
-        MenuResponseDto menuResponseDto = menuService.createMenu(user, storeId, requestDto);
+        MenuResponseDto responseDto = menuService.createMenu(user, storeId, requestDto);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(menuResponseDto);
+        return new ResponseEntity<>(new CommonResponse<>("성공했습니다.", responseDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/menus/{menuId}")
-    public ResponseEntity<MenuResponseDto> updateMenu(
+    public ResponseEntity<CommonResponse> updateMenu(
             @SessionAttribute(Auth.LOGIN_USER) User user,
             @PathVariable Long storeId,
             @PathVariable Long menuId,
             @RequestBody @Valid MenuRequestDto requestDto
     ) {
-
 //        log.info("storeId :{}", storeId);
 //        log.info("menuId {}", menuId);
-        MenuResponseDto menuResponseDto = menuService.updateMenu(user, storeId, menuId, requestDto);
+        MenuResponseDto responseDto = menuService.updateMenu(user, storeId, menuId, requestDto);
 
-        return ResponseEntity
-                .ok()
-                .body(menuResponseDto);
+        return new ResponseEntity<>(new CommonResponse<>("성공했습니다.", responseDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/menus/{menuId}")
-    public ResponseEntity<String> deleteMenu(
+    public ResponseEntity<CommonResponse> deleteMenu(
         @SessionAttribute(Auth.LOGIN_USER) User user,
         @PathVariable Long storeId,
         @PathVariable Long menuId
     ){
         menuService.delete(user, storeId,  menuId);
-        return ResponseEntity.ok().body("정상적으로 삭제 되었습니다.");
+        return  new ResponseEntity<>(new CommonResponse<>("정상적으로 삭제 되었습니다."), HttpStatus.OK);
+
     }
 }
