@@ -2,6 +2,7 @@ package com.example.koobaeyo.reviews.service;
 
 import com.example.koobaeyo.orders.entity.Order;
 import com.example.koobaeyo.orders.repository.OrderRepository;
+import com.example.koobaeyo.orders.type.OrderStatus;
 import com.example.koobaeyo.reviews.dto.FindReviewByRateDto;
 import com.example.koobaeyo.reviews.dto.ReviewRequestDto;
 import com.example.koobaeyo.reviews.dto.ReviewCreateResponseDto;
