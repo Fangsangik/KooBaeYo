@@ -20,6 +20,13 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    /**
+     * 리뷰 생성
+     * @param orderId
+     * @param userId
+     * @param reviewRequestDto
+     * @return ReviewCreateResponseDto
+     */
     @PostMapping("/reviews/orders/{orderId}")
     public ResponseEntity<CommonResponse<ReviewCreateResponseDto>> createReview
             (@PathVariable Long orderId,
@@ -29,6 +36,14 @@ public class ReviewController {
         return ResponseEntity.ok(new CommonResponse<>("리뷰 생성 성공", reviewCreateResponseDto));
     }
 
+    /**
+     * 리뷰 조회
+     * @param storeId
+     * @param userId
+     * @param page
+     * @param size
+     * @return Page<ReviewResponseDto>
+     */
     @GetMapping("/stores/{storeId}/reviews")
     public ResponseEntity<CommonResponse<Page<ReviewResponseDto>>> getReviews
             (@PathVariable Long storeId,
@@ -39,6 +54,14 @@ public class ReviewController {
         return ResponseEntity.ok(new CommonResponse<>("리뷰 조회 성공", reviewResponseDto));
     }
 
+    /**
+     * 리뷰 평점 조회
+     * @param storeId
+     * @param findReviewByRateDto
+     * @param page
+     * @param size
+     * @return Page<ReviewResponseDto>
+     */
     @GetMapping("/stores/{storeId}/reviews/rate")
     public ResponseEntity<CommonResponse<Page<ReviewResponseDto>>> getReviewRate
             (@PathVariable Long storeId,
