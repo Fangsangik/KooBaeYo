@@ -3,12 +3,8 @@ package com.example.koobaeyo.user.service;
 import com.example.koobaeyo.common.util.UtilValidation;
 import com.example.koobaeyo.user.dto.signup.SignUpRequestDto;
 import com.example.koobaeyo.user.dto.signup.SignUpResponseDto;
-import com.example.koobaeyo.user.dto.update.UpdateUserRequestDto;
-import com.example.koobaeyo.user.dto.update.UpdateUserResponseDto;
 import com.example.koobaeyo.user.entity.User;
 import com.example.koobaeyo.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -42,5 +38,4 @@ public class UserService {
 
         return new SignUpResponseDto(savedUser.getId());
     }
-
 }
