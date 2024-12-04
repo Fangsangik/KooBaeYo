@@ -12,9 +12,20 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     boolean existsByOrderId(Long orderId);
 
+    /**
+     * 가게별 리뷰 조회 단 본인이 작성한 리뷰는 제외
+     * @param storeId
+     * @param userId
+     * @param pageable
+     */
     @Query("select r from Review r where r.store.id = :storeId and r.user.id != :userId")
     Page<Review> findByStoreIdAndExcludeUser(@Param("storeId") Long storeId, @Param("userId") Long userId, Pageable pageable);
 
+    /**
+     * 가게별 리뷰 조회
+     * @param storeId
+     * @param pageable
+     */
     @Query("select r from Review r where r.store.id = :storeId and r.rate between :minRate and :maxRate")
     Page<Review> findByReviewRateAndStoreId(@Param("storeId") Long storeId, @Param("minRate") int minRate, @Param("maxRate") int maxRate, Pageable pageable);
 }

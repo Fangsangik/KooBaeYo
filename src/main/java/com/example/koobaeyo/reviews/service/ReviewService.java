@@ -41,7 +41,18 @@ public class ReviewService {
         this.storeRepository = storeRepository;
     }
 
-
+    /**
+     * Review 생성 서비스
+     * 1. 사용자 조회
+     * 2. 주문 조회
+     * 3. 가게 조회
+     * 4. 리뷰 생성
+     *
+     * @param orderId
+     * @param userId
+     * @param reviewRequestDto
+     * @return ReviewCreateResponseDto
+     */
     @Transactional
     public ReviewCreateResponseDto createReview(Long orderId, Long userId, ReviewRequestDto reviewRequestDto) {
         // 사용자 조회
@@ -60,14 +71,19 @@ public class ReviewService {
             throw new ReviewBaseException(STORE_NOT_FOUND);
         }
 
-        if (reviewRequestDto.getRate() < 1 || reviewRequestDto.getRate() > 5) {
-            throw new ReviewBaseException(INVALID_INPUT_RATE);
-        }
-
         Review save = reviewRepository.save(reviewRequestDto.toEntity(store, order ,user));
         return new ReviewCreateResponseDto(save);
     }
 
+    /**
+     * Review 조회 서비스
+     *
+     * @param storeId
+     * @param userId
+     * @param page
+     * @param size
+     * @return Page<ReviewResponseDto>
+     */
     @Transactional(readOnly = true)
     public Page<ReviewResponseDto> findReview(Long storeId, Long userId, int page, int size) {
         pageValidation(page, size);
@@ -79,6 +95,15 @@ public class ReviewService {
                 review.getUser().getId(), review.getRate(), review.getContent()));
     }
 
+    /**
+     * Review 평점 조회 서비스
+     *
+     * @param storeId
+     * @param findReviewByRateDto
+     * @param page
+     * @param size
+     * @return Page<ReviewResponseDto>
+     */
     @Transactional(readOnly = true)
     public Page<ReviewResponseDto> findReviewByRate(Long storeId, FindReviewByRateDto findReviewByRateDto, int page, int size) {
         pageValidation(page, size);
