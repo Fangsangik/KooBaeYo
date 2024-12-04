@@ -2,12 +2,12 @@ package com.example.koobaeyo.orders.entity;
 
 import com.example.koobaeyo.common.BaseEntity;
 import com.example.koobaeyo.orders.type.OrderStatus;
+import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.catalina.Store;
 
 import java.awt.*;
 

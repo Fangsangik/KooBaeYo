@@ -7,8 +7,7 @@ import com.example.koobaeyo.reviews.dto.ReviewCreateResponseDto;
 import com.example.koobaeyo.reviews.dto.ReviewRequestDto;
 import com.example.koobaeyo.reviews.dto.ReviewResponseDto;
 import com.example.koobaeyo.reviews.service.ReviewService;
-import com.example.koobaeyo.user.entity.User;
-import lombok.Getter;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +20,11 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping("/reviews/{orderId}")
+    @PostMapping("/reviews/orders/{orderId}")
     public ResponseEntity<CommonResponse<ReviewCreateResponseDto>> createReview
             (@PathVariable Long orderId,
              @SessionAttribute(Auth.LOGIN_USER) Long userId,
-             @RequestBody ReviewRequestDto reviewRequestDto) {
+             @Valid @RequestBody ReviewRequestDto reviewRequestDto) {
         ReviewCreateResponseDto reviewCreateResponseDto = reviewService.createReview(orderId, userId, reviewRequestDto);
         return ResponseEntity.ok(new CommonResponse<>("리뷰 생성 성공", reviewCreateResponseDto));
     }
@@ -43,7 +42,7 @@ public class ReviewController {
     @GetMapping("/stores/{storeId}/reviews/rate")
     public ResponseEntity<CommonResponse<Page<ReviewResponseDto>>> getReviewRate
             (@PathVariable Long storeId,
-             @RequestBody FindReviewByRateDto findReviewByRateDto,
+             @Valid @RequestBody FindReviewByRateDto findReviewByRateDto,
              @RequestParam(value = "page", required = false, defaultValue = "0") int page,
              @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
