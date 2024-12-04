@@ -8,6 +8,8 @@ import com.example.koobaeyo.reviews.dto.ReviewRequestDto;
 import com.example.koobaeyo.reviews.dto.ReviewCreateResponseDto;
 import com.example.koobaeyo.reviews.dto.ReviewResponseDto;
 import com.example.koobaeyo.reviews.entity.Review;
+import com.example.koobaeyo.reviews.exception.ReviewBaseException;
+import com.example.koobaeyo.reviews.exception.type.ReviewErrorCode;
 import com.example.koobaeyo.reviews.repository.ReviewRepository;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.repository.StoreRepository;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static com.example.koobaeyo.reviews.exception.type.ReviewErrorCode.*;
 
 @Service
 public class ReviewService {
@@ -42,24 +46,22 @@ public class ReviewService {
     public ReviewCreateResponseDto createReview(Long orderId, Long userId, ReviewRequestDto reviewRequestDto) {
         // 사용자 조회
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ReviewBaseException(USER_NOT_FOUND));
 
         // 주문 조회
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ReviewBaseException(ORDER_NOT_FOUND));
 
-        if (order.getOrderStatus() != OrderStatus.DELIVERED) {
-            throw new IllegalArgumentException("배달 완료되지 않은 주문은 리뷰를 작성할 수 없습니다.");
-        }
+        validateReviewCreation(orderId, order);
 
         // 가게 조회
         Store store = order.getStore();
         if (store == null) {
-            throw new IllegalArgumentException("가게를 찾을 수 없습니다.");
+            throw new ReviewBaseException(STORE_NOT_FOUND);
         }
 
         if (reviewRequestDto.getRate() < 1 || reviewRequestDto.getRate() > 5) {
-            throw new IllegalArgumentException("평점은 1~5 사이여야 합니다.");
+            throw new ReviewBaseException(INVALID_INPUT_RATE);
         }
 
         Review save = reviewRepository.save(reviewRequestDto.toEntity(store, order ,user));
@@ -89,12 +91,21 @@ public class ReviewService {
 
     private static void pageValidation(int page, int size) {
         if (page < 0) {
-            throw new IllegalArgumentException("페이지는 0보다 커야합니다.");
+            throw new ReviewBaseException(PAGE_INPUT_EXCEPTION);
         }
 
         if (size > 10) {
-            throw new IllegalArgumentException("사이즈는 10보다 작아야합니다.");
+            throw new ReviewBaseException(PAGE_INPUT_EXCEPTION);
         }
     }
 
+    private void validateReviewCreation(Long orderId, Order order) {
+        if (order.getOrderStatus() != OrderStatus.DELIVERED) {
+            throw new ReviewBaseException(ORDER_STATUS_NOT_DELIVERED);
+        }
+
+        if (reviewRepository.existsByOrderId(orderId)) {
+            throw new ReviewBaseException(REVIEW_ALREADY_EXISTS);
+        }
+    }
 }
