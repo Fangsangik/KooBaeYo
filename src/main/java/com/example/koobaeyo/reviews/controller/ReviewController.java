@@ -21,7 +21,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping("/reviews/{orderId}")
+    @PostMapping("/reviews/orders/{orderId}")
     public ResponseEntity<CommonResponse<ReviewCreateResponseDto>> createReview
             (@PathVariable Long orderId,
              @SessionAttribute(Auth.LOGIN_USER) Long userId,
