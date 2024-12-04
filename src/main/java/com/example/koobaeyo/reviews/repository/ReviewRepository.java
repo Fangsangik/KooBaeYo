@@ -10,9 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("select o.status from Order o where o.id = :orderId")
-    Review findOrderStatusByOrderId(@Param("orderId") Long orderId);
-
     @Query("select r from Review r where r.store.id = :storeId and r.user.id != :userId")
     Page<Review> findByStoreIdAndExcludeUser(@Param("storeId") Long storeId, @Param("userId") Long userId, Pageable pageable);
 
