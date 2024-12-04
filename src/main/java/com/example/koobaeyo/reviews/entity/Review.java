@@ -1,5 +1,6 @@
 package com.example.koobaeyo.reviews.entity;
 
+import com.example.koobaeyo.orders.entity.Order;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.user.entity.User;
 import jakarta.persistence.*;
