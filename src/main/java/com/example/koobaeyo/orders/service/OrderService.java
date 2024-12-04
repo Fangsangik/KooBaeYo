@@ -76,12 +76,12 @@ public class OrderService {
 
         //storeId, userId 모두 없는 경우
         if(storeId == null && userId == null) {
-            throw new IllegalArgumentException(("아이디 값을 넣어주세요."));
+            throw new IllegalArgumentException(("아이디 값을 넣어주세요."))
         }
         //storeId만 있는 경우
         else if(storeId != null && userId == null) {
             storeService.findStore(storeId);
-            orders = orderRepository.findByStoreId(storeId);
+            orders = orderRepository.findByStoreId(storeId)
         }
         //userId만 있는 경우
         else if(storeId == null && userId != null) {
@@ -90,7 +90,7 @@ public class OrderService {
         }
         //storeId, userId 둘다 있는 경우
         else {
-            throw new IllegalArgumentException(("아이디를 한개만 선택해주세요"));
+            throw new IllegalArgumentException(("아이디를 한개만 선택해주세요"))
         }
 
         //for문으로 command(option)+enter
