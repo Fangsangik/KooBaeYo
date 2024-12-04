@@ -1,9 +1,8 @@
-package com.example.koobaeyo.auth.controller;
+package com.example.koobaeyo.login.controller;
 
 import com.example.koobaeyo.common.CommonResponse;
-import com.example.koobaeyo.auth.dto.LoginRequestDto;
-import com.example.koobaeyo.auth.service.AuthService;
-import com.example.koobaeyo.common.constants.Auth;
+import com.example.koobaeyo.login.dto.LoginRequestDto;
+import com.example.koobaeyo.login.service.LoginService;
 import com.example.koobaeyo.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -17,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("logins")
-public class AuthController {
+public class LoginController {
 
-    private final AuthService loginService;
+    private final LoginService loginService;
 
     @Autowired
-    public AuthController(AuthService loginService) {
+    public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }
 
@@ -32,7 +31,7 @@ public class AuthController {
         User user =  loginService.loginUser(loginRequestDto);
 
         HttpSession session = request.getSession();
-        session.setAttribute(Auth.LOGIN_USER, user);
+        session.setAttribute("loginUser", user);
         return new ResponseEntity<>(new CommonResponse<>("성공했습니다."), HttpStatus.OK);
     }
 }

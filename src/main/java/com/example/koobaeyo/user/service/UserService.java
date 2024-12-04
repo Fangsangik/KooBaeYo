@@ -1,7 +1,6 @@
 package com.example.koobaeyo.user.service;
 
 import com.example.koobaeyo.common.util.UtilValidation;
-import com.example.koobaeyo.user.dto.finduser.FindUserResponseDto;
 import com.example.koobaeyo.user.dto.signup.SignUpRequestDto;
 import com.example.koobaeyo.user.dto.signup.SignUpResponseDto;
 import com.example.koobaeyo.user.dto.update.UpdateUserRequestDto;
@@ -44,10 +43,4 @@ public class UserService {
         return new SignUpResponseDto(savedUser.getId());
     }
 
-    public FindUserResponseDto findUser(Long id) {
-
-        User findUser = userRepository.FindByIdOrElseThrow(id);
-
-        return new FindUserResponseDto(findUser.getId(), findUser.getName(), findUser.getEmail(), findUser.getRole());
-    }
 }

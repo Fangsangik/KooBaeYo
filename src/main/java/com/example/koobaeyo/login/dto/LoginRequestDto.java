@@ -1,4 +1,4 @@
-package com.example.koobaeyo.auth.dto;
+package com.example.koobaeyo.login.dto;
 
 import lombok.Getter;
 
