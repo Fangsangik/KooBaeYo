@@ -10,9 +10,7 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu, Long> {
     default Menu findByIdOrElseThrow(Long menuId){
         return findById(menuId)
-                .orElseThrow(()->{
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 메뉴가 존재하지 않습니다.");
-                });
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 메뉴가 존재하지 않습니다."));
     };
 
 }
