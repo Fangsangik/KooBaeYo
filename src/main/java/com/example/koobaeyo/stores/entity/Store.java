@@ -1,6 +1,7 @@
 package com.example.koobaeyo.stores.entity;
 
 import com.example.koobaeyo.common.BaseEntity;
+import com.example.koobaeyo.orders.entity.Order;
 import com.example.koobaeyo.stores.dto.StoreRemodelRequestDto;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import com.example.koobaeyo.user.entity.User;
