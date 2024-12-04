@@ -62,20 +62,8 @@ public class ReviewService {
             throw new IllegalArgumentException("평점은 1~5 사이여야 합니다.");
         }
 
-
-        // 리뷰 저장
-        Review review = reviewRepository.save(
-                Review.builder()
-                        .store(store)
-                        .order(order)
-                        .user(user) // User 추가
-                        .rate(reviewRequestDto.getRate())
-                        .content(reviewRequestDto.getContent())
-                        .build()
-        );
-
-        // 응답 반환
-        return new ReviewCreateResponseDto(review.getId());
+        Review save = reviewRepository.save(reviewRequestDto.toEntity(store, order ,user));
+        return new ReviewCreateResponseDto(save);
     }
 
     @Transactional(readOnly = true)
@@ -92,10 +80,6 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Page<ReviewResponseDto> findReviewByRate(Long storeId, FindReviewByRateDto findReviewByRateDto, int page, int size) {
         pageValidation(page, size);
-
-        if (findReviewByRateDto.getMinRate() < 3 || findReviewByRateDto.getMaxRate() > 5 || findReviewByRateDto.getMinRate() > findReviewByRateDto.getMaxRate()) {
-            throw new IllegalArgumentException("평점은 3~5 사이여야합니다.");
-        }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Review> reviews = reviewRepository.findByReviewRateAndStoreId(storeId, findReviewByRateDto.getMinRate(), findReviewByRateDto.getMaxRate(), pageable);
