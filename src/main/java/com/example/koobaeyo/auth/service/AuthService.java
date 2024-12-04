@@ -1,6 +1,6 @@
-package com.example.koobaeyo.login.service;
+package com.example.koobaeyo.auth.service;
 
-import com.example.koobaeyo.login.dto.LoginRequestDto;
+import com.example.koobaeyo.auth.dto.LoginRequestDto;
 import com.example.koobaeyo.user.entity.User;
 import com.example.koobaeyo.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class LoginService {
+public class AuthService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public LoginService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
