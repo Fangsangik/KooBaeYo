@@ -49,8 +49,8 @@ public class MenuController {
             @RequestBody @Valid MenuRequestDto requestDto
     ) {
 
-        log.info("storeId :{}", storeId);
-        log.info("menuId {}", menuId);
+//        log.info("storeId :{}", storeId);
+//        log.info("menuId {}", menuId);
         MenuResponseDto menuResponseDto = menuService.updateMenu(user, storeId, menuId, requestDto);
 
         return ResponseEntity
@@ -58,13 +58,13 @@ public class MenuController {
                 .body(menuResponseDto);
     }
 
-//    @DeleteMapping("/menus/{menuId}")
-//    public ResponseEntity<String> deleteMenu(
-//        @SessionAttribute(Auth.LOGIN_USER) User user,
-//        @PathVariable Long storeId,
-//        @PathVariable Long menuId
-//    ){
-//        menuService.delete(user, storeId,  menuId);
-//        return ResponseEntity.ok().body("정상적으로 삭제 되었습니다.");
-//    }
+    @DeleteMapping("/menus/{menuId}")
+    public ResponseEntity<String> deleteMenu(
+        @SessionAttribute(Auth.LOGIN_USER) User user,
+        @PathVariable Long storeId,
+        @PathVariable Long menuId
+    ){
+        menuService.delete(user, storeId,  menuId);
+        return ResponseEntity.ok().body("정상적으로 삭제 되었습니다.");
+    }
 }
