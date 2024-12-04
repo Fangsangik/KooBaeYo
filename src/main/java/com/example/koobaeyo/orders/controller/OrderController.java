@@ -15,12 +15,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-//    @PostMapping
-//
-//    @PutMapping
-//
-//    @PatchMapping
-//
-//    @GetMapping
+    @PostMapping
+
+    @PutMapping
+
+    @PatchMapping
+
+    @GetMapping
 
 }
