@@ -48,6 +48,10 @@ public class ReviewService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
 
+        if (order.getOrderStatus() != OrderStatus.DELIVERED) {
+            throw new IllegalArgumentException("배달 완료되지 않은 주문은 리뷰를 작성할 수 없습니다.");
+        }
+
         // 가게 조회
         Store store = order.getStore();
         if (store == null) {
