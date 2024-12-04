@@ -49,7 +49,7 @@ public class MenuService {
 
         }
 
-        Menu menu = new Menu(requestDto.getName(), requestDto.getDescription(), requestDto.getPrice());
+        Menu menu = new Menu(findStore, requestDto.getName(), requestDto.getDescription(), requestDto.getPrice());
         Menu saveMenu = menuRepository.save(menu);
         return new MenuResponseDto(saveMenu.getId());
     }

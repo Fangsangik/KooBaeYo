@@ -2,6 +2,7 @@ package com.example.koobaeyo.menus.entity;
 
 import com.example.koobaeyo.common.BaseEntity;
 import com.example.koobaeyo.stores.entity.Store;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -14,6 +15,7 @@ public class Menu  extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stores_id", nullable = false)
     private Store store;
@@ -28,7 +30,8 @@ public class Menu  extends BaseEntity {
     private Double price;
 
 
-    public Menu(String name, String description, Double price) {
+    public Menu(Store store, String name, String description, Double price) {
+        this.store = store;
         this.name = name;
         this.description = description;
         this.price = price;
