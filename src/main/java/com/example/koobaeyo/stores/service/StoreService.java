@@ -11,6 +11,7 @@ import com.example.koobaeyo.user.type.Role;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,13 +39,11 @@ public class StoreService {
             throw new StoreBaseException(StoreErrorCode.CANNOT_OPEN_STORE);
         }
 
-        Store openedStore = storeRepository.save(dto.toEntity());
+        Store openedStore = storeRepository.save(dto.toEntity(user));
 
         return new StoreOpenResponseDto(openedStore);
 
     }
-
-
 
 
     //가게이름으로 가게를 검색(목록 조회)

@@ -36,5 +36,5 @@ public enum StoreErrorCode {
 
 
     private final HttpStatus httpStatus;
-        private final String message;
+    private final String message;
 }
