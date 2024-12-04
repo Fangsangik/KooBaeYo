@@ -39,25 +39,24 @@ public class MenuController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(menuResponseDto);
-
     }
 
-//    @PostMapping("/menus/{menuId}")
-//    public ResponseEntity<MenuResponseDto> updateMenu(
-//            @SessionAttribute(Auth.LOGIN_USER) User user,
-//            @PathVariable Long storeId,
-//            @PathVariable Long menuId,
-//            @RequestBody @Valid MenuRequestDto requestDto
-//    ) {
-//
-//        log.info("storeId :{}", storeId);
-//        log.info("menuId {}", menuId);
-//        MenuResponseDto menuResponseDto = menuService.updateMenu(user, storeId, menuId, requestDto);
-//
-//        return ResponseEntity
-//                .ok()
-//                .body(menuResponseDto);
-//    }
+    @PostMapping("/menus/{menuId}")
+    public ResponseEntity<MenuResponseDto> updateMenu(
+            @SessionAttribute(Auth.LOGIN_USER) User user,
+            @PathVariable Long storeId,
+            @PathVariable Long menuId,
+            @RequestBody @Valid MenuRequestDto requestDto
+    ) {
+
+        log.info("storeId :{}", storeId);
+        log.info("menuId {}", menuId);
+        MenuResponseDto menuResponseDto = menuService.updateMenu(user, storeId, menuId, requestDto);
+
+        return ResponseEntity
+                .ok()
+                .body(menuResponseDto);
+    }
 
 //    @DeleteMapping("/menus/{menuId}")
 //    public ResponseEntity<String> deleteMenu(
