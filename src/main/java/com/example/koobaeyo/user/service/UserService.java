@@ -87,7 +87,6 @@ public class UserService {
             throw new UserBaseException(UserErrorCode.USE_PROPER_ID);
         }
 
-
         if(passwordEncoder.matches(password, findUser.getPassword())){
             findUser.setIsDeleted(true);
         } else {
