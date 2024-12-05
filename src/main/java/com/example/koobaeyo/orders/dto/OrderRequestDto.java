@@ -19,7 +19,6 @@ public class OrderRequestDto {
     @NotBlank(message = "Menu ID cannot be blank")
     private Long menuId;
     private Integer quantity;
-    private Double totalPrice;
     private OrderStatus status;
 
     public Order toEntity(User user, Store store, Menu menu) {
@@ -28,7 +27,6 @@ public class OrderRequestDto {
                 .menu(menu)
                 .store(store)
                 .quantity(this.quantity)
-                .totalPrice(this.totalPrice)
                 .orderStatus(this.status)
                 .build();
     }
