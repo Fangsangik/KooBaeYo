@@ -38,9 +38,10 @@ public class StoreController {
     //가게이름으로 조회
     @GetMapping
     public ResponseEntity<CommonResponse<List<StoreResponseDto>>> searchStoreByName(
-        @RequestParam String storeName
+        @RequestParam String storeName,
+        @SessionAttribute(Auth.LOGIN_USER) User user
     ){
-        List<StoreResponseDto> dtoList = storeService.searchStoreByName(storeName);
+        List<StoreResponseDto> dtoList = storeService.searchStoreByName(user,storeName);
 
         return new ResponseEntity<>(new CommonResponse<>("성공했습니다.",dtoList),HttpStatus.OK);
     }
@@ -48,9 +49,10 @@ public class StoreController {
     //가게 단건 조회
     @GetMapping("/{storeId}")
     public ResponseEntity<CommonResponse<StoreResponseDetailDto>> searchStoreDetail(
-            @PathVariable Long storeId
+            @PathVariable Long storeId,
+            @SessionAttribute(Auth.LOGIN_USER) User user
     ){
-        StoreResponseDetailDto responseDto = storeService.searchStoreDetail(storeId);
+        StoreResponseDetailDto responseDto = storeService.searchStoreDetail(user,storeId);
 
         return new ResponseEntity<>(new CommonResponse<>("성공했습니다.",responseDto),HttpStatus.OK);
     }

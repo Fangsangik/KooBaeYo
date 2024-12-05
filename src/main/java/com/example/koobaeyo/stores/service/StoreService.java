@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -46,18 +47,24 @@ public class StoreService {
 
 
     //가게이름으로 가게를 검색(목록 조회)
-    public List<StoreResponseDto> searchStoreByName(String storeName) {
-        List<Store> storeList =  storeRepository.findAllByName(storeName);
+    public List<StoreResponseDto> searchStoreByName(User user, String storeName) {
+
+        List<Store> storeList =  isOwner(user) ? storeRepository.findAllByName(storeName) : storeRepository.findAllByNameIsOpen(storeName);
 
         return storeList.stream().map(StoreResponseDto::new).toList();
     }
 
     //가게 단건 조회시
-    public StoreResponseDetailDto searchStoreDetail(Long storeId) {
-        Store store = storeRepository.findById(storeId).orElseThrow(
-                () -> new StoreBaseException(StoreErrorCode.NOT_FOUND_STORE));
+    public StoreResponseDetailDto searchStoreDetail(User user, Long storeId) {
+        Optional<Store> optionalStore = isOwner(user) ?
+                storeRepository.findById(storeId)
+                : storeRepository.findByIdIsOpen(storeId);
 
-        return new StoreResponseDetailDto(store);
+        if(optionalStore.isEmpty()){
+            throw new StoreBaseException(StoreErrorCode.NOT_FOUND_STORE);
+        }
+
+        return new StoreResponseDetailDto(optionalStore.get());
     }
 
     //가게 리모델링
@@ -100,5 +107,11 @@ public class StoreService {
         if(role != Role.ADMIN){
             throw new StoreBaseException(StoreErrorCode.IS_NOT_OWNER);
         }
+    }
+
+    private boolean isOwner(User user) {
+        Role role = userService.findUser(user.getId()).getRole();
+
+        return role == Role.ADMIN;
     }
 }
