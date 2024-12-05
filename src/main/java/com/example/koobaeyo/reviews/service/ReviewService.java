@@ -92,7 +92,7 @@ public class ReviewService {
         Page<Review> reviews = reviewRepository.findByStoreIdAndExcludeUser(storeId, userId, pageable);
 
         return reviews.map(review -> new ReviewResponseDto(
-                review.getUser().getId(), review.getRate(), review.getContent()));
+                review.getUser().getId(), review.getRate(), review.getContent(), review.getCreatedAt()));
     }
 
     /**
@@ -111,7 +111,7 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Review> reviews = reviewRepository.findByReviewRateAndStoreId(storeId, findReviewByRateDto.getMinRate(), findReviewByRateDto.getMaxRate(), pageable);
 
-        return reviews.map(review -> new ReviewResponseDto(review.getUser().getId(), review.getRate(), review.getContent()));
+        return reviews.map(review -> new ReviewResponseDto(review.getUser().getId(), review.getRate(), review.getContent(), review.getCreatedAt()));
     }
 
     private static void pageValidation(int page, int size) {
