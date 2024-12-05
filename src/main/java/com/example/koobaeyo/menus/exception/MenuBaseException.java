@@ -1,7 +1,9 @@
 package com.example.koobaeyo.menus.exception;
 
 import com.example.koobaeyo.menus.exception.type.MenuErrorCode;
+import lombok.Getter;
 
+@Getter
 public class MenuBaseException extends RuntimeException{
     private final MenuErrorCode errorCode;
 
