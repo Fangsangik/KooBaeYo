@@ -36,13 +36,8 @@ public class AuthController {
         HttpSession session = request.getSession(false);
         if(session == null) {
             session = request.getSession();
-        }else{
-            Object attribute = session.getAttribute(Auth.LOGIN_USER);
-            User logined = (User) attribute;
-
-            if(!logined.getEmail().equals(loginRequestDto.getEmail())){
-                throw new AuthBaseException(AuthErrorCode.CAN_NOT_LOGIN);
-            }
+        } else{
+            throw new AuthBaseException(AuthErrorCode.CAN_NOT_LOGIN);
         }
 
         User user =  loginService.loginUser(loginRequestDto);
