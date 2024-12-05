@@ -2,6 +2,7 @@ package com.example.koobaeyo.common.exception;
 
 import com.example.koobaeyo.auth.exception.AuthBaseException;
 import com.example.koobaeyo.common.exception.response.ErrorResponse;
+import com.example.koobaeyo.menus.exception.MenuBaseException;
 import com.example.koobaeyo.reviews.exception.ReviewBaseException;
 import com.example.koobaeyo.stores.exception.StoreBaseException;
 import com.example.koobaeyo.user.exception.UserBaseException;
@@ -41,6 +42,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleReviewException(ReviewBaseException e) {
         log.error("UserBaseException : {}", e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, e.getErrorCode().getHttpStatus());
+    }
+
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleMenuException(MenuBaseException e) {
+        log.error("MenuBaseException : {}", e.getMessage());
 
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, e.getErrorCode().getHttpStatus());
