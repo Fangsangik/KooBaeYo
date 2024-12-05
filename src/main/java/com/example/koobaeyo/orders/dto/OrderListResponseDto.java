@@ -1,5 +1,6 @@
 package com.example.koobaeyo.orders.dto;
 
+import com.example.koobaeyo.orders.type.OrderStatus;
 import lombok.Getter;
 
 @Getter
@@ -10,11 +11,11 @@ public class OrderListResponseDto {
     private Long userId;
     private Long menuId;
     private Integer quantity;
-    private Long totalPrice;
-    private String orderStatus;
+    private Double totalPrice;
+    private OrderStatus orderStatus;
 
 
-    public OrderListResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity, Long totalPrice, String orderStatus) {
+    public OrderListResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity, Double totalPrice, OrderStatus orderStatus) {
         this.orderId = orderId;
         this.storeId = storeId;
         this.userId = userId;
