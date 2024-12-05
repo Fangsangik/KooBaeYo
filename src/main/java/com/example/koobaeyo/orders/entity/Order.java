@@ -1,6 +1,7 @@
 package com.example.koobaeyo.orders.entity;
 
 import com.example.koobaeyo.common.BaseEntity;
+import com.example.koobaeyo.menus.entity.Menu;
 import com.example.koobaeyo.orders.type.OrderStatus;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.user.entity.User;
@@ -9,7 +10,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 
 @Entity
 @Setter
@@ -43,13 +43,22 @@ public class Order extends BaseEntity {
 
     public Order() {}
 
+
     @Builder
-    public Order(User user, Menu menu, Store store, Integer quantity, Double totalPrice, OrderStatus orderStatus) {
+    public Order(User user, Menu menu, Store store, Integer quantity, OrderStatus orderStatus) {
         this.user = user;
         this.menu = menu;
         this.store = store;
         this.quantity = quantity;
-        this.totalPrice = totalPrice;
+        this.totalPrice = calculateTotalPrice();
         this.orderStatus = orderStatus;
+    }
+
+    private Double calculateTotalPrice() {
+        if (menu != null && menu.getPrice() != null && quantity != null) {
+            return menu.getPrice() * quantity.doubleValue();
+        }else {
+            return 0.0;
+        }
     }
 }

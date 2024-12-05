@@ -1,7 +1,11 @@
 package com.example.koobaeyo.orders.dto;
 
+import com.example.koobaeyo.menus.entity.Menu;
 import com.example.koobaeyo.orders.entity.Order;
 import com.example.koobaeyo.orders.type.OrderStatus;
+import com.example.koobaeyo.stores.entity.Store;
+import com.example.koobaeyo.user.entity.User;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +14,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class OrderRequestDto {
-    private Long userId;
+    @NotBlank(message = "Store ID cannot be blank")
     private Long storeId;
+    @NotBlank(message = "Menu ID cannot be blank")
     private Long menuId;
     private Integer quantity;
-    private Long totalPrice;
+    private Double totalPrice;
     private OrderStatus status;
 
-    //생성자 따로 추가
+    public Order toEntity(User user, Store store, Menu menu) {
+        return Order.builder()
+                .user(user)
+                .menu(menu)
+                .store(store)
+                .quantity(this.quantity)
+                .totalPrice(this.totalPrice)
+                .orderStatus(this.status)
+                .build();
+    }
 }
