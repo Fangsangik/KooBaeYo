@@ -45,7 +45,7 @@ public class Order extends BaseEntity {
 
 
     @Builder
-    public Order(User user, Menu menu, Store store, Integer quantity, OrderStatus orderStatus) {
+    public Order(User user, Menu menu, Store store, Integer quantity,Double totalPrice, OrderStatus orderStatus) {
         this.user = user;
         this.menu = menu;
         this.store = store;
