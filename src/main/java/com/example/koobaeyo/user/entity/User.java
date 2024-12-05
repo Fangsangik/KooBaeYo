@@ -4,8 +4,10 @@ import com.example.koobaeyo.common.BaseEntity;
 import com.example.koobaeyo.user.type.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Setter
 @Getter
 @Table
 public class User extends BaseEntity {

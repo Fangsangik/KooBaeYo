@@ -1,5 +1,7 @@
 package com.example.koobaeyo.auth.controller;
 
+import com.example.koobaeyo.auth.exception.AuthBaseException;
+import com.example.koobaeyo.auth.exception.type.AuthErrorCode;
 import com.example.koobaeyo.common.CommonResponse;
 import com.example.koobaeyo.auth.dto.LoginRequestDto;
 import com.example.koobaeyo.auth.service.AuthService;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.jar.Attributes;
+
 @RestController
-@RequestMapping("logins")
+@RequestMapping
 public class AuthController {
 
     private final AuthService loginService;
@@ -26,14 +30,40 @@ public class AuthController {
         this.loginService = loginService;
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<CommonResponse<Void>> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
-        //로그인을 성공하면 -> 세션에 회원정보를 저장해야되잖아요
+
+        HttpSession session = request.getSession(false);
+        if(session == null) {
+            session = request.getSession();
+        }else{
+            Object attribute = session.getAttribute(Auth.LOGIN_USER);
+            User logined = (User) attribute;
+
+            if(!logined.getEmail().equals(loginRequestDto.getEmail())){
+                throw new AuthBaseException(AuthErrorCode.CAN_NOT_LOGIN);
+            }
+        }
+
         User user =  loginService.loginUser(loginRequestDto);
 
-        HttpSession session = request.getSession();
         session.setAttribute(Auth.LOGIN_USER, user);
-        return new ResponseEntity<>(new CommonResponse<>("성공했습니다."), HttpStatus.OK);
+
+        return new ResponseEntity<>(new CommonResponse<>("로그인 성공했습니다."), HttpStatus.OK);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<CommonResponse<Void>> logoutUser(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        if(session !=null) {
+            session.invalidate();
+        }
+
+        return new ResponseEntity<>(new CommonResponse<>("로그아웃 성공"),HttpStatus.OK);
+    }
+
+
 }
 

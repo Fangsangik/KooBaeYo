@@ -1,5 +1,6 @@
 package com.example.koobaeyo.orders.service;
 
+import com.example.koobaeyo.menus.service.MenuService;
 import com.example.koobaeyo.orders.dto.OrderListResponseDto;
 import com.example.koobaeyo.orders.dto.OrderRequestDto;
 import com.example.koobaeyo.orders.dto.OrderResponseDto;
