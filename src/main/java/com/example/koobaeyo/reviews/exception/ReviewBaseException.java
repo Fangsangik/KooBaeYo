@@ -2,7 +2,9 @@ package com.example.koobaeyo.reviews.exception;
 
 import com.example.koobaeyo.reviews.exception.type.ReviewErrorCode;
 import com.example.koobaeyo.stores.exception.code.StoreErrorCode;
+import lombok.Getter;
 
+@Getter
 public class ReviewBaseException extends RuntimeException{
     private final ReviewErrorCode errorCode;
 
