@@ -32,6 +32,14 @@ public class MenuService {
         this.storeRepository = storeRepository;
     }
 
+    /**
+     * 메뉴 생성
+     * @param user
+     * @param storeId
+     * @param requestDto
+     * @return : {@link MenuResponseDto }
+     * @return : {@link MenuResponseDto }
+     */
     public MenuResponseDto createMenu(User user, Long storeId, MenuRequestDto requestDto) {
 
         // 가게 조회
@@ -54,12 +62,12 @@ public class MenuService {
     }
 
     /**
-     *
+     * 메뉴 수정
      * @param user
      * @param storeId
      * @param menuId
-     * @param @link{MenuRequestDto}
-     * @return
+     * @param : {@link MenuRequestDto}
+     * @return : {@link MenuResponseDto }
      */
     @Transactional
     public MenuResponseDto updateMenu(User user, Long storeId, Long menuId, MenuRequestDto requestDto) {
@@ -92,7 +100,13 @@ public class MenuService {
         return new MenuResponseDto(findMenu.getId());
     }
 
-
+    /**
+     * 메뉴 삭제
+     * @param user
+     * @param storeId
+     * @param menuId
+     * @return void
+     */
     public void delete(User user, Long storeId, Long menuId) {
 
         // 가게 조회
