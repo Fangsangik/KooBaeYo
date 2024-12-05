@@ -1,7 +1,12 @@
 package com.example.koobaeyo.auth.service;
 
 import com.example.koobaeyo.auth.dto.LoginRequestDto;
+import com.example.koobaeyo.auth.exception.AuthBaseException;
+import com.example.koobaeyo.auth.exception.type.AuthErrorCode;
+import com.example.koobaeyo.common.config.PasswordEncoder;
 import com.example.koobaeyo.user.entity.User;
+import com.example.koobaeyo.user.exception.UserBaseException;
+import com.example.koobaeyo.user.exception.code.UserErrorCode;
 import com.example.koobaeyo.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,31 +17,30 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User loginUser(LoginRequestDto loginRequestDto) {
         User user = userRepository.findByEmail(loginRequestDto.getEmail());
 
         if(user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new AuthBaseException(AuthErrorCode.CANNOT_FIND_USER);
         }
 
-        if (!loginRequestDto.getPassword().equals(user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "잘못된 비밀번호입니다.");
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
+            throw new AuthBaseException(AuthErrorCode.PASSWORD_DOES_NOT_MATCH);
+        }
+
+        if(user.getIsDeleted() == true) {
+            throw new AuthBaseException(AuthErrorCode.DELETED_USER);
         }
 
         return user;
-
-        //1. dto에 있는 이메일이 이미 DB에 존재하는지 확인
-        //DB에 존재하면 user가져오기
-        //2. 가져온 user의 패스워드와 dto의 패스워드 비교
-        //틀리면 예외
-        //맞으면 user 가져와서 리턴
     }
-
-
 }

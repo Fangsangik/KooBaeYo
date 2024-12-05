@@ -3,6 +3,8 @@ package com.example.koobaeyo.menus.service;
 import com.example.koobaeyo.menus.dto.MenuRequestDto;
 import com.example.koobaeyo.menus.dto.MenuResponseDto;
 import com.example.koobaeyo.menus.entity.Menu;
+import com.example.koobaeyo.menus.exception.MenuBaseException;
+import com.example.koobaeyo.menus.exception.type.MenuErrorCode;
 import com.example.koobaeyo.menus.repository.MenuRepository;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.exception.StoreBaseException;
@@ -38,15 +40,12 @@ public class MenuService {
 
         // 예외처리 -  가게 주인만 메뉴 생성 가능
         if(!isStoreOwner(user.getId(), findStore.getOwner().getId())) {
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "해당 가게 주인만 메뉴를 생성할 수 있습니다.");
+            throw new MenuBaseException(MenuErrorCode.MENU_CREATION_UNAUTHORIZED);
         }
 
         // 예외처리 - 가게가 open 일 때만 메뉴 생성 가능
         if(!isStoreOpen(findStore.getIsOpen())){
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가게가 '폐업'인 경우 메뉴를 생성할 수 없습니다.");
-
+            throw new MenuBaseException(MenuErrorCode.MENU_CREATION_CLOSED_STORE);
         }
 
         Menu menu = new Menu(findStore, requestDto.getName(), requestDto.getDescription(), requestDto.getPrice());
@@ -74,21 +73,18 @@ public class MenuService {
 
         // 예외처리 -  가게 주인만 메뉴 수정 가능
         if(!isStoreOwner(user.getId(), findStore.getOwner().getId())) {
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "해당 가게 주인만 메뉴를 수정할 수 있습니다.");
+            throw new MenuBaseException(MenuErrorCode.MENU_UPDATE_UNAUTHORIZED);
         }
 
         // 예외처리 - 가게가 open 일 때만 메뉴 수정 가능
         if(!isStoreOpen(findStore.getIsOpen())){
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가게가 '폐업'인 경우 메뉴를 수정할 수 없습니다.");
+            throw new MenuBaseException(MenuErrorCode.MENU_UPDATE_CLOSED_STORE);
 
         }
 
         // 예외처리 - 동일한 가게에서의 요청인지 확인
         if(!isSameStore(storeId, findStore.getId())){
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "요청한 가게 ID가 일치하지 않습니다.");
+            throw new MenuBaseException(MenuErrorCode.MENU_UPDATE_INVALID_STORE_ID);
         }
 
         findMenu.update(requestDto.getName(), requestDto.getDescription(), requestDto.getPrice());
@@ -108,21 +104,17 @@ public class MenuService {
 
         // 예외처리 -  가게 주인만 메뉴 생성 가능
         if(!isStoreOwner(user.getId(), findStore.getOwner().getId())) {
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "해당 가게 주인만 메뉴를 삭제할 수 있습니다.");
+            throw new MenuBaseException(MenuErrorCode.MENU_DELETION_UNAUTHORIZED);
         }
 
         // 예외처리 - 가게가 open 일 때만 메뉴 삭제 가능
         if(!isStoreOpen(findStore.getIsOpen())){
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가게가 '폐업'인 경우 메뉴를 삭제할 수 없습니다.");
-
+            throw new MenuBaseException(MenuErrorCode.MENU_DELETION_CLOSED_STORE);
         }
 
         // 동일한 가게에서의 요청인지 확인
         if(!isSameStore(storeId, findStore.getId())){
-            // TODO: 예외 커스텀 처리
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "요청한 가게 ID가 일치하지 않습니다.");
+            throw new MenuBaseException(MenuErrorCode.MENU_DELETION_INVALID_STORE_ID);
         }
 
         menuRepository.deleteById(menuId);
@@ -140,3 +132,5 @@ public class MenuService {
         return findStoreId.equals(reqeustStoreId);
     }
 }
+
+

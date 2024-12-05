@@ -1,5 +1,6 @@
 package com.example.koobaeyo.reviews.entity;
 
+import com.example.koobaeyo.common.BaseEntity;
 import com.example.koobaeyo.orders.entity.Order;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.user.entity.User;
@@ -9,7 +10,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

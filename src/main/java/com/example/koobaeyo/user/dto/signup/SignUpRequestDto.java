@@ -5,6 +5,7 @@ import com.example.koobaeyo.user.entity.User;
 import com.example.koobaeyo.user.type.Role;
 import lombok.Getter;
 
+
 @Getter
 public class SignUpRequestDto {
     private final String name;
@@ -26,11 +27,11 @@ public class SignUpRequestDto {
         this.number = number;
     }
 
-    public User toEntity() {
+    public User toEntity(String password) {
         return new User(
                 this.name,
                 this.email,
-                this.password,
+                password,
                 this.role,
                 this.number
         );
