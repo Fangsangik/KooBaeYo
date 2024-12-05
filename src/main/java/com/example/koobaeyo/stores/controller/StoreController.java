@@ -6,6 +6,7 @@ import com.example.koobaeyo.stores.dto.*;
 import com.example.koobaeyo.stores.service.StoreService;
 import com.example.koobaeyo.user.entity.User;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class StoreController {
     @PostMapping
     public ResponseEntity<CommonResponse<StoreOpenResponseDto>> openStore(
             @SessionAttribute(Auth.LOGIN_USER) User user,
-            @RequestBody StoreOpenRequestDto dto)
+           @Valid @RequestBody StoreOpenRequestDto dto)
     {
         StoreOpenResponseDto responseDto = storeService.openStore(user, dto);
 
@@ -58,7 +59,7 @@ public class StoreController {
     @PatchMapping("/{storeId}")
     public ResponseEntity<CommonResponse<StoreOpenResponseDto>> remodelingStore(
         @PathVariable Long storeId,
-        @RequestBody StoreRemodelRequestDto dto,
+        @Valid @RequestBody StoreRemodelRequestDto dto,
         @SessionAttribute(Auth.LOGIN_USER) User user
     ){
         StoreOpenResponseDto responseDto = storeService.remodelingStore(storeId, dto, user);

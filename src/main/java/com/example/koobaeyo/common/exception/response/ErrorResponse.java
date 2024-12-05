@@ -11,5 +11,11 @@ public class ErrorResponse {
         this.success = false;
         this.message = message;
     }
+    public ErrorResponse(){
+        this.success = false;
+    }
 
+    public void putMessage(String message){
+        this.message =message;
+    }
 }

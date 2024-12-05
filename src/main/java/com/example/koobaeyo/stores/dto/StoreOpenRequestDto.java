@@ -1,8 +1,10 @@
 package com.example.koobaeyo.stores.dto;
 
+import com.example.koobaeyo.stores.constants.StoreConstants;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import com.example.koobaeyo.user.entity.User;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -14,11 +16,11 @@ public class StoreOpenRequestDto {
 
     @NotBlank
     private String name;
-    @NotBlank
+    @NotNull
     private CuisineType type;
     @NotBlank
     private String address;
-    @NotBlank
+    @DecimalMin(StoreConstants.MIN_PRICE)
     private Double minOrderAmount;
     @NotNull
     private LocalTime opening;
