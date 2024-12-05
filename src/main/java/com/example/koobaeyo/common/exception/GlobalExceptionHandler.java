@@ -7,7 +7,9 @@ import com.example.koobaeyo.reviews.exception.ReviewBaseException;
 import com.example.koobaeyo.stores.exception.StoreBaseException;
 import com.example.koobaeyo.user.exception.UserBaseException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -54,5 +56,19 @@ public class GlobalExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, e.getErrorCode().getHttpStatus());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e){
+        log.error("MethodArgumentNotValidException : {}", e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String defaultMessage = error.getDefaultMessage(); // Default message만 추출
+            errorResponse.putMessage(defaultMessage);
+        });
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

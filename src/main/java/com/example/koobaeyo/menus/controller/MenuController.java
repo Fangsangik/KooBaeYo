@@ -4,16 +4,13 @@ import com.example.koobaeyo.common.CommonResponse;
 import com.example.koobaeyo.common.constants.Auth;
 import com.example.koobaeyo.menus.dto.MenuRequestDto;
 import com.example.koobaeyo.menus.dto.MenuResponseDto;
-import com.example.koobaeyo.menus.entity.Menu;
 import com.example.koobaeyo.menus.service.MenuService;
 import com.example.koobaeyo.user.entity.User;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
