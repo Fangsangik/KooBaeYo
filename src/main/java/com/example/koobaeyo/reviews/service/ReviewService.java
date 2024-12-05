@@ -88,7 +88,7 @@ public class ReviewService {
     public Page<ReviewResponseDto> findReview(Long storeId, Long userId, int page, int size) {
         pageValidation(page, size);
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Review> reviews = reviewRepository.findByStoreIdAndExcludeUser(storeId, userId, pageable);
 
         return reviews.map(review -> new ReviewResponseDto(
