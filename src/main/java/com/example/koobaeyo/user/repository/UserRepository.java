@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
-    default User FindByIdOrElseThrow(Long id) {
+    default User findByIdOrElseThrow(Long id) {
         return findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
