@@ -2,8 +2,6 @@ package com.example.koobaeyo.common.filter;
 
 import com.example.koobaeyo.auth.exception.type.AuthErrorCode;
 import com.example.koobaeyo.common.constants.Auth;
-import com.example.koobaeyo.common.exception.response.ErrorResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
