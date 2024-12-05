@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    @Query("SELECT COUNT(s) FROM Store s WHERE s.owner.id = :ownerId AND s.isOpen = FALSE")
+    @Query("SELECT COUNT(s) FROM Store s WHERE s.owner.id = :ownerId AND s.isOpen = TRUE")
     Long countOpenStoresByOwner(@Param("ownerId") Long ownerId);
 
     List<Store> findAllByName(String storeName);
