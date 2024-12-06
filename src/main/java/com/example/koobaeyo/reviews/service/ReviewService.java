@@ -86,7 +86,7 @@ public class ReviewService {
      */
     @Transactional(readOnly = true)
     public Page<ReviewResponseDto> findReview(Long storeId, Long userId, int page, int size) {
-        pageValidation(page, size);
+        pageValidation(page);
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Review> reviews = reviewRepository.findByStoreIdAndExcludeUser(storeId, userId, pageable);
