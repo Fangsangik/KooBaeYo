@@ -43,15 +43,13 @@ public class Order extends BaseEntity {
 
     public Order() {}
 
-
     @Builder
-    public Order(User user, Menu menu, Store store, Integer quantity,Double totalPrice, OrderStatus orderStatus) {
+    public Order(User user, Menu menu, Store store, Integer quantity,Double totalPrice) {
         this.user = user;
         this.menu = menu;
         this.store = store;
         this.quantity = quantity;
         this.totalPrice = calculateTotalPrice();
-        this.orderStatus = orderStatus;
     }
 
     private Double calculateTotalPrice() {
