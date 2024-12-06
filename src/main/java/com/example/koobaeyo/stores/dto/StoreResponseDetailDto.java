@@ -8,6 +8,9 @@ import lombok.Getter;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * 가게 상세 응답 Dto
+ */
 @Getter
 public class StoreResponseDetailDto {
     private String storeName;

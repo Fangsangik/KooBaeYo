@@ -4,6 +4,9 @@ import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import lombok.Getter;
 
+/**
+ * 가게 목록 조회에 들어갈 가게 정보 Dto
+ */
 @Getter
 public class StoreResponseDto {
     private Long id;
