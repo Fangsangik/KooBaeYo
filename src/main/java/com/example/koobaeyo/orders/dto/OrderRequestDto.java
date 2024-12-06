@@ -27,7 +27,6 @@ public class OrderRequestDto {
                 .menu(menu)
                 .store(store)
                 .quantity(this.quantity)
-                .orderStatus(this.status)
                 .build();
     }
 }
