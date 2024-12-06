@@ -78,11 +78,9 @@ public class StoreService {
                 storeRepository.findByIdUsingOwner(storeId,user)
                 : storeRepository.findByIdIsOpen(storeId);
 
-        if(optionalStore.isEmpty()){
-            throw new StoreBaseException(StoreErrorCode.NOT_FOUND_STORE);
-        }
+        Store store = optionalStore.orElseThrow(() -> new StoreBaseException(StoreErrorCode.NOT_FOUND_STORE));
 
-        return new StoreResponseDetailDto(optionalStore.get());
+        return new StoreResponseDetailDto(store);
     }
 
     /**

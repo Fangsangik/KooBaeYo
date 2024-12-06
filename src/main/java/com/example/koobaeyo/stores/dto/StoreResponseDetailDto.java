@@ -1,6 +1,6 @@
 package com.example.koobaeyo.stores.dto;
 
-import com.example.koobaeyo.menus.entity.Menu;
+import com.example.koobaeyo.orders.dto.StoreMenuResponse;
 import com.example.koobaeyo.stores.entity.Store;
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class StoreResponseDetailDto {
     private Double minOrderAmount;
     private LocalTime opening;
     private LocalTime closing;
-    private List<Menu> menus;
+    private List<StoreMenuResponse> menus;
 
     public StoreResponseDetailDto(Store store){
         this.storeName = store.getName();
@@ -30,6 +30,6 @@ public class StoreResponseDetailDto {
         this.minOrderAmount = store.getMinOrderAmount();
         this.opening = store.getOpening();
         this.closing = store.getClosing();
-        this.menus = store.getMenus();
+        this.menus = store.getMenus().stream().map(StoreMenuResponse::new).toList();
     }
 }
