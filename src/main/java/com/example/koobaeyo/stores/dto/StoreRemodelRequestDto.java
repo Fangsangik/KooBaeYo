@@ -2,14 +2,18 @@ package com.example.koobaeyo.stores.dto;
 
 import com.example.koobaeyo.stores.entity.type.CuisineType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
+/**
+ * 가게 리모델링 요청 Dto
+ */
 @Getter
 public class StoreRemodelRequestDto {
 
     @NotBlank
     private String name;
-    @NotBlank
+    @NotNull
     private CuisineType type;
     @NotBlank
     private String address;

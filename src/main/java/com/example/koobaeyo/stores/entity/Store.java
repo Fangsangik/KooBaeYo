@@ -52,9 +52,6 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<Order> orders = new ArrayList<>();
-
     public Store(){ }
 
     @Builder

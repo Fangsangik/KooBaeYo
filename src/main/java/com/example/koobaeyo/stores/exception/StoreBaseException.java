@@ -3,6 +3,9 @@ package com.example.koobaeyo.stores.exception;
 import com.example.koobaeyo.stores.exception.code.StoreErrorCode;
 import lombok.Getter;
 
+/**
+ * 가게공통 예외
+ */
 @Getter
 public class StoreBaseException extends RuntimeException {
     private final StoreErrorCode errorCode;

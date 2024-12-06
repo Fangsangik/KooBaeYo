@@ -29,9 +29,15 @@ public class StoreService {
         this.userService = userService;
     }
 
-    //최대 3개, 사장님 권한을 가진 유저만 생성 가능, 폐업 상태가 아닌 가게 최대 3개 폐업상태면 여러개 ㄱㅊ
-    //예외 403 FORBIDDEN
-    public StoreOpenResponseDto openStore(User user, StoreOpenRequestDto dto) {
+
+    /**
+     * 가게 오픈 서비스(오픈한 가게가 3개 이상이면 오픈 x)
+     * @param user 로그인된 유저
+     * @param dto 가게오픈에 필요한 정보 {@link StoreOpenRequestDto}
+     * @return 오픈된 가게의 아이디 {@link StoreIdResponseDto}
+     * @throws StoreBaseException 가게예외
+     */
+    public StoreIdResponseDto openStore(User user, StoreOpenRequestDto dto) {
 
         checkOwner(user);
 
@@ -41,23 +47,35 @@ public class StoreService {
 
         Store openedStore = storeRepository.save(dto.toEntity(user));
 
-        return new StoreOpenResponseDto(openedStore);
+        return new StoreIdResponseDto(openedStore);
 
     }
 
 
-    //가게이름으로 가게를 검색(목록 조회)
+    /**
+     * 가게 이름 조회 서비스
+     * @param user 로그인된 유저
+     * @param storeName 가게 아이디
+     * @return 사장님이면 모든 가게목록, 유저면 오픈된 가게목록 {@link StoreResponseDto}
+     */
     public List<StoreResponseDto> searchStoreByName(User user, String storeName) {
 
-        List<Store> storeList =  isOwner(user) ? storeRepository.findAllByName(storeName) : storeRepository.findAllByNameIsOpen(storeName);
+        List<Store> storeList =  isOwner(user) ? storeRepository.findAllByNameUsingOwner(storeName,user)
+                : storeRepository.findAllByNameIsOpen(storeName);
 
         return storeList.stream().map(StoreResponseDto::new).toList();
     }
 
-    //가게 단건 조회시
+
+    /**
+     * 가게 단건 상세 조회 서비스
+     * @param user 로그인된 유저
+     * @param storeId 가게 아이디
+     * @return 가게 상세 조회, 폐업된 가게면 사장님만 조회 {@link StoreResponseDetailDto}
+     */
     public StoreResponseDetailDto searchStoreDetail(User user, Long storeId) {
         Optional<Store> optionalStore = isOwner(user) ?
-                storeRepository.findById(storeId)
+                storeRepository.findByIdUsingOwner(storeId,user)
                 : storeRepository.findByIdIsOpen(storeId);
 
         if(optionalStore.isEmpty()){
@@ -67,10 +85,15 @@ public class StoreService {
         return new StoreResponseDetailDto(optionalStore.get());
     }
 
-    //가게 리모델링
-    //자신 가게만 리모델링 가능(스토어 아이디가 내가 오픈한 가게가 아니면)
+    /**
+     * 가게 리모델링 서비스
+     * @param storeId 가게 아이디
+     * @param dto 가게 리모델링 정보 {@link StoreRemodelRequestDto}
+     * @param user 로그인된 유저
+     * @return 리모델링된 가게 아이디 {@link StoreIdResponseDto}
+     */
     @Transactional
-    public StoreOpenResponseDto remodelingStore(Long storeId, StoreRemodelRequestDto dto, User user) {
+    public StoreIdResponseDto remodelingStore(Long storeId, StoreRemodelRequestDto dto, User user) {
         checkOwner(user);
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new StoreBaseException(StoreErrorCode.NOT_FOUND_STORE));
@@ -82,10 +105,16 @@ public class StoreService {
         //내가 사장님이면
         store.remodel(dto);
 
-        return new StoreOpenResponseDto(store);
+        return new StoreIdResponseDto(store);
     }
 
-    public StoreOpenResponseDto closeDownStore(Long storeId, User user) {
+    /**
+     * 가게 폐업 서비스
+     * @param storeId 가게 아이디
+     * @param user 로그인된 유저
+     * @return 폐업된 가게 아이디 {@link StoreIdResponseDto}
+     */
+    public StoreIdResponseDto closeDownStore(Long storeId, User user) {
         checkOwner(user);
 
         Store store = storeRepository.findById(storeId).orElseThrow(
@@ -98,9 +127,14 @@ public class StoreService {
         //내가 사장님이면
         store.closeDown();
 
-        return new StoreOpenResponseDto(store);
+        return new StoreIdResponseDto(store);
     }
 
+    /**
+     * 사장님 권한 인증(아니면 예외던짐)
+     * @param user 로그인된 유저
+     * @throws StoreBaseException 가게예외
+     */
     private void checkOwner(User user) {
         Role role = userService.findUser(user.getId()).getRole();
 
@@ -109,6 +143,11 @@ public class StoreService {
         }
     }
 
+    /**
+     * 사장님 권한 여부
+     * @param user 로그인된 유저
+     * @return 사장님이면 true, 일반 유저면 false
+     */
     private boolean isOwner(User user) {
         Role role = userService.findUser(user.getId()).getRole();
 

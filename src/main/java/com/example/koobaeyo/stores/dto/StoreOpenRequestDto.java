@@ -11,6 +11,9 @@ import lombok.Getter;
 
 import java.time.LocalTime;
 
+/**
+ * 가게 오픈 요청 Dto
+ */
 @Getter
 public class StoreOpenRequestDto {
 
