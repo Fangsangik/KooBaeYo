@@ -106,7 +106,7 @@ public class ReviewService {
      */
     @Transactional(readOnly = true)
     public Page<ReviewResponseDto> findReviewByRate(Long storeId, FindReviewByRateDto findReviewByRateDto, int page, int size) {
-        pageValidation(page, size);
+        pageValidation(page);
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Review> reviews = reviewRepository.findByReviewRateAndStoreId(storeId, findReviewByRateDto.getMinRate(), findReviewByRateDto.getMaxRate(), pageable);
@@ -114,12 +114,8 @@ public class ReviewService {
         return reviews.map(review -> new ReviewResponseDto(review.getUser().getId(), review.getRate(), review.getContent(), review.getCreatedAt()));
     }
 
-    private static void pageValidation(int page, int size) {
+    private static void pageValidation(int page) {
         if (page < 0) {
-            throw new ReviewBaseException(PAGE_INPUT_EXCEPTION);
-        }
-
-        if (size > 10) {
             throw new ReviewBaseException(PAGE_INPUT_EXCEPTION);
         }
     }

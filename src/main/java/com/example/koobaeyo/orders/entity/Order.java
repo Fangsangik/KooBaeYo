@@ -22,7 +22,7 @@ public class Order extends BaseEntity {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne   //(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

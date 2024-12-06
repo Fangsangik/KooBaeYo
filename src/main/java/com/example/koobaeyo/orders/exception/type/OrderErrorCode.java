@@ -23,7 +23,10 @@ public enum OrderErrorCode {
     //사용자, 메뉴, 가게를 찾을 수 없을때 에러코드
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "메뉴를 찾을 수 없습니다."),
-    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다.");
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다."),
+    //배달완료 했을때 에러코드
+    ALREADY_DELIVERED(HttpStatus.BAD_REQUEST, "배달이 완료되었습니다."),
+    INVALID_ORDER_STATUS(HttpStatus.BAD_REQUEST, "잘못된 주문상태입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

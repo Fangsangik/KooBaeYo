@@ -24,11 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalTime;
-
-import static com.example.koobaeyo.reviews.exception.type.ReviewErrorCode.PAGE_INPUT_EXCEPTION;
-
 
 @Service
 public class OrderService {
@@ -83,13 +79,18 @@ public class OrderService {
 
     //주문 상태 변경
     @Transactional
-    public OrderUpdateResponseDto updateOrderStatus(Long userId, Long orderId, OrderStatus orderStatus) {
+    public OrderUpdateResponseDto updateOrderStatus(Long userId, Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderBaseException(OrderErrorCode.NOT_FOUND_ORDER));
 
         checkOwner(userRepository.findById(userId).orElseThrow(() -> new OrderBaseException(OrderErrorCode.USER_NOT_FOUND)));
 
-        order.setOrderStatus(orderStatus);
+        //현재 상태에서 다음 상태로 변경
+        OrderStatus currentStatus = order.getOrderStatus();
+        OrderStatus nextStatus = getNextOrderStatus(order.getOrderStatus());
+
+        //상태변경
+        order.setOrderStatus(nextStatus);
         orderRepository.save(order);
 
         return new OrderUpdateResponseDto(
@@ -98,10 +99,29 @@ public class OrderService {
         );
     }
 
+    private OrderStatus getNextOrderStatus(OrderStatus currentStatus) {
+        switch (currentStatus) {
+            case ORDERED:
+                return OrderStatus.ACCEPTED;
+            case ACCEPTED:
+                return OrderStatus.COOKING;
+            case COOKING:
+                return OrderStatus.COOKED;
+            case COOKED:
+                return OrderStatus.DELIVERING;
+            case DELIVERING:
+                return OrderStatus.DELIVERED;
+            case DELIVERED:
+                throw new OrderBaseException(OrderErrorCode.ALREADY_DELIVERED); // 이미 배달 완료된 상태에서 변경 불가
+            default:
+                throw new OrderBaseException(OrderErrorCode.INVALID_ORDER_STATUS); // 알 수 없는 상태
+        }
+    }
+
     //주문 목록 조회
     @Transactional(readOnly = true)
     public Page<OrderListResponseDto> getAllOrders(Long storeId, User user, int page, int size) {
-        pageValidation(page, size);
+        pageValidation(page);
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -125,7 +145,8 @@ public class OrderService {
                 order.getMenu().getId(),
                 order.getQuantity(),
                 order.getTotalPrice(),
-                order.getOrderStatus())
+                order.getOrderStatus(),
+                order.getCreatedAt())
         );
     }
 
@@ -153,15 +174,13 @@ public class OrderService {
                 order.getMenu().getId(),
                 order.getQuantity(),
                 order.getTotalPrice(),
-                order.getOrderStatus()
+                order.getOrderStatus(),
+                order.getCreatedAt()
         );
     }
 
-    public void pageValidation(int page, int size) {
+    public void pageValidation(int page) {
         if (page < 0) {
-            throw new OrderBaseException(OrderErrorCode.PAGE_INPUT_EXCEPTION);
-        }
-        if (size > 10) {
             throw new OrderBaseException(OrderErrorCode.PAGE_INPUT_EXCEPTION);
         }
     }
