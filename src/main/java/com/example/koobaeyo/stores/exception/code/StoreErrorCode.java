@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * 가게에러코드
+ */
 @Getter
 @AllArgsConstructor
 public enum StoreErrorCode {
