@@ -23,5 +23,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.id = :storeId AND s.isOpen = TRUE")
     Optional<Store> findByIdIsOpen(@Param("storeId") Long storeId);
 
+    boolean existsByIdAndOwnerId(Long storeId, Long userId);
 
 }

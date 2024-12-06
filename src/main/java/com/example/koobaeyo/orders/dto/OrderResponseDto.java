@@ -7,6 +7,7 @@ public class OrderResponseDto {
 
     private Long orderId;
 
+
     public OrderResponseDto(Long orderId) {
         this.orderId = orderId;
     }
