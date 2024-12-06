@@ -3,6 +3,8 @@ package com.example.koobaeyo.orders.dto;
 import com.example.koobaeyo.orders.type.OrderStatus;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class OrderListResponseDto {
 
@@ -13,9 +15,10 @@ public class OrderListResponseDto {
     private Integer quantity;
     private Double totalPrice;
     private OrderStatus orderStatus;
+    private LocalDateTime createdAt;
 
 
-    public OrderListResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity, Double totalPrice, OrderStatus orderStatus) {
+    public OrderListResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity, Double totalPrice, OrderStatus orderStatus, LocalDateTime createdAt) {
         this.orderId = orderId;
         this.storeId = storeId;
         this.userId = userId;
@@ -23,5 +26,6 @@ public class OrderListResponseDto {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
+        this.createdAt = createdAt;
     }
 }
