@@ -90,11 +90,6 @@ public class MenuService {
 
         }
 
-        // 예외처리 - 동일한 가게에서의 요청인지 확인
-        if(!isSameStore(storeId, findStore.getId())){
-            throw new MenuBaseException(MenuErrorCode.MENU_UPDATE_INVALID_STORE_ID);
-        }
-
         findMenu.update(requestDto.getName(), requestDto.getDescription(), requestDto.getPrice());
 
         return new MenuResponseDto(findMenu.getId());
@@ -126,11 +121,6 @@ public class MenuService {
             throw new MenuBaseException(MenuErrorCode.MENU_DELETION_CLOSED_STORE);
         }
 
-        // 동일한 가게에서의 요청인지 확인
-        if(!isSameStore(storeId, findStore.getId())){
-            throw new MenuBaseException(MenuErrorCode.MENU_DELETION_INVALID_STORE_ID);
-        }
-
         menuRepository.deleteById(menuId);
     }
 
@@ -140,10 +130,6 @@ public class MenuService {
 
     private boolean isStoreOpen(Boolean isOpen) {
         return isOpen == true;
-    }
-
-    private boolean isSameStore(Long reqeustStoreId, Long findStoreId ){
-        return findStoreId.equals(reqeustStoreId);
     }
 }
 
