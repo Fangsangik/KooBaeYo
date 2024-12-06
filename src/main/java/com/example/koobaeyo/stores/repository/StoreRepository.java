@@ -28,6 +28,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.id = :storeId AND s.isOpen = TRUE")
     Optional<Store> findByIdIsOpen(@Param("storeId") Long storeId);
 
+    boolean existsByIdAndOwnerId(Long storeId, Long userId);
+
     //가게 상세 조회에서 사장님도 오픈되있거나 내 가게이거나인 가게조회
     @Query("SELECT s FROM Store s WHERE s.id = :storeId AND (s.owner = :owner OR s.isOpen = TRUE)")
     Optional<Store> findByIdUsingOwner(@Param("storeId") Long storeId, @Param("owner") User owner);

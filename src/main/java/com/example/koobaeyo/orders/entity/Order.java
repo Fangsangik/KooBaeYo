@@ -39,7 +39,7 @@ public class Order extends BaseEntity {
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus = OrderStatus.ORDERED;
 
     public Order() {}
 
