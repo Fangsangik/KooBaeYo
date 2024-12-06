@@ -32,6 +32,14 @@ public class MenuService {
         this.storeRepository = storeRepository;
     }
 
+    /**
+     * 메뉴 생성
+     * @param user
+     * @param storeId
+     * @param requestDto
+     * @return : {@link MenuResponseDto }
+     * @return : {@link MenuResponseDto }
+     */
     public MenuResponseDto createMenu(User user, Long storeId, MenuRequestDto requestDto) {
 
         // 가게 조회
@@ -54,12 +62,12 @@ public class MenuService {
     }
 
     /**
-     *
+     * 메뉴 수정
      * @param user
      * @param storeId
      * @param menuId
-     * @param @link{MenuRequestDto}
-     * @return
+     * @param : {@link MenuRequestDto}
+     * @return : {@link MenuResponseDto }
      */
     @Transactional
     public MenuResponseDto updateMenu(User user, Long storeId, Long menuId, MenuRequestDto requestDto) {
@@ -82,17 +90,18 @@ public class MenuService {
 
         }
 
-        // 예외처리 - 동일한 가게에서의 요청인지 확인
-        if(!isSameStore(storeId, findStore.getId())){
-            throw new MenuBaseException(MenuErrorCode.MENU_UPDATE_INVALID_STORE_ID);
-        }
-
         findMenu.update(requestDto.getName(), requestDto.getDescription(), requestDto.getPrice());
 
         return new MenuResponseDto(findMenu.getId());
     }
 
-
+    /**
+     * 메뉴 삭제
+     * @param user
+     * @param storeId
+     * @param menuId
+     * @return void
+     */
     public void delete(User user, Long storeId, Long menuId) {
 
         // 가게 조회
@@ -112,11 +121,6 @@ public class MenuService {
             throw new MenuBaseException(MenuErrorCode.MENU_DELETION_CLOSED_STORE);
         }
 
-        // 동일한 가게에서의 요청인지 확인
-        if(!isSameStore(storeId, findStore.getId())){
-            throw new MenuBaseException(MenuErrorCode.MENU_DELETION_INVALID_STORE_ID);
-        }
-
         menuRepository.deleteById(menuId);
     }
 
@@ -126,10 +130,6 @@ public class MenuService {
 
     private boolean isStoreOpen(Boolean isOpen) {
         return isOpen == true;
-    }
-
-    private boolean isSameStore(Long reqeustStoreId, Long findStoreId ){
-        return findStoreId.equals(reqeustStoreId);
     }
 }
 

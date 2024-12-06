@@ -25,18 +25,31 @@ public class MenuController {
         this.menuService = menuService;
     }
 
+    /**
+     * 메뉴 생성
+     * @param user
+     * @param storeId
+     * @param : {@link MenuRequestDto}
+     * @return : {@link @ResponseEntity<CommonResponse>}
+     */
     @PostMapping("/menus")
     public ResponseEntity<CommonResponse> createMenu(
             @SessionAttribute(Auth.LOGIN_USER) User user,
             @PathVariable Long storeId,
             @RequestBody @Valid MenuRequestDto requestDto
     ){
-
         MenuResponseDto responseDto = menuService.createMenu(user, storeId, requestDto);
-
         return new ResponseEntity<>(new CommonResponse<>("성공했습니다.", responseDto), HttpStatus.CREATED);
     }
 
+    /**
+     * 메뉴 수정
+     * @param user
+     * @param storeId
+     * @param menuId
+     * @param : {@link MenuRequestDto}
+     * @return : {@link @ResponseEntity<CommonResponse>}
+     */
     @PostMapping("/menus/{menuId}")
     public ResponseEntity<CommonResponse> updateMenu(
             @SessionAttribute(Auth.LOGIN_USER) User user,
@@ -44,13 +57,17 @@ public class MenuController {
             @PathVariable Long menuId,
             @RequestBody @Valid MenuRequestDto requestDto
     ) {
-//        log.info("storeId :{}", storeId);
-//        log.info("menuId {}", menuId);
         MenuResponseDto responseDto = menuService.updateMenu(user, storeId, menuId, requestDto);
-
         return new ResponseEntity<>(new CommonResponse<>("성공했습니다.", responseDto), HttpStatus.OK);
     }
 
+    /**
+     * 메뉴 삭제
+     * @param user
+     * @param storeId
+     * @param menuId
+     * @return : {@link @ResponseEntity<CommonResponse>}
+     */
     @DeleteMapping("/menus/{menuId}")
     public ResponseEntity<CommonResponse> deleteMenu(
         @SessionAttribute(Auth.LOGIN_USER) User user,
