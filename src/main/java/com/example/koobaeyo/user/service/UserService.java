@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 
 @Service
 public class UserService {
@@ -22,13 +24,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * 회원가입
+     * @param requestDto 회원가입을 위한 요청정보
+     * @return SignUpResponseDto - 회원가입 완료 응답 dto
+     */
     public SignUpResponseDto signUp(SignUpRequestDto requestDto) {
         if (!UtilValidation.isValidPasswordFormat(requestDto.getPassword())) {
             throw new UserBaseException(UserErrorCode.IMPROPER_PASSWORD);
@@ -47,6 +53,11 @@ public class UserService {
         return new SignUpResponseDto(savedUser.getId());
     }
 
+    /**
+     * 회원 단건 조회
+     * @param id 회원 조회시 필요한 사용자 식별 id
+     * @return FindUserResponseDto - 회원조회에 대한 응답 dto
+     */
     public FindUserResponseDto findUser(Long id) {
 
         User findUser = userRepository.findByIdOrElseThrow(id);
@@ -54,6 +65,12 @@ public class UserService {
         return new FindUserResponseDto(findUser.getId(), findUser.getName(), findUser.getEmail(), findUser.getRole());
     }
 
+    /**
+     * 회원 수정
+     * @param id 회원정보 수정시 필요한 사용자 식별 id
+     * @param requestDto 회원정보 수정을 위한 요청정보
+     * @return UpdateUserResponseDto - 회원수정에 대한 응답 dto
+     */
     @Transactional
     public UpdateUserResponseDto updateUser(Long id, UpdateUserRequestDto requestDto) {
 
@@ -78,6 +95,11 @@ public class UserService {
     }
 
 
+    /**
+     * 회원 삭제
+     * @param id 회원 삭제시 필요한 사용자 고유 식별 id
+     * @param password 회원 삭제시 필요한 사용자 비밀번호
+     */
     @Transactional
     public void deleteUser(Long id, String password) {
 
@@ -88,7 +110,8 @@ public class UserService {
         }
 
         if(passwordEncoder.matches(password, findUser.getPassword())){
-            findUser.setIsDeleted(true);
+            findUser.setDeleted(true);
+            findUser.setDeletedAt(LocalDateTime.now());
         } else {
             throw new UserBaseException(UserErrorCode.PASSWORD_DOES_NOT_MATCH);
         }
